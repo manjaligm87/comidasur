@@ -57,36 +57,48 @@
     </div>
     </article>
      <!-- =============================show All menus============================= -->
-      <article id="showallmenu" class="list scroll active">
-        <div>Search: <input ng-model="query" ></div>
-        <div style="height:40px"> 
-            <ul class="thumb">
-                <li  ng-repeat="cat in ShowmenuByCat | filter:query:menu_category" class="thumbnail phone-listing">
-              <img  src="assets/images/{{cat.menu_image}}">
-                 <p>
-                    <strong>
-                        <a href="#/homepage/menudetail/{{cat.menu_id}}" >{{cat.menu_name}} </a>
-                      
-                    </strong></p>
-                    <p>${{cat.menu_price}}</p>
-                </li>
-            </ul>
+      <article id="showallmenu" class="list scroll active">   
+        <div class="title">Search by Items: <input ng-model="query" ></div>
+            <div ng-controller="menuCtrl"> 
+              <ul>
+                  <li ng-repeat="poll in menusitems | filter:query">
+                        <img ng-src="assets/images/{{poll.menu_image}}"/>
+                         <div style="height:30px">
+                            <div class="on-right text tiny">
+                                <strong>
+                                <a href="#/homepage/menudetail/{{poll.menu_id}}">{{poll.menu_name}}</a>
+                                </strong>
+                            </div>
+                        </div>
+                    </li>
+              </ul>
         </div>
     </article>
      <!-- =============================menudetail============================= -->
-     <article id="menudetail" class="scroll active">
-     <div class="large text  bold align_center">
-      <img src="assets/images/caprese_salad.jpg"> </div> 
-        <div id="buttons" class="scrollable indented  current" ng-controller="PostCtrl">
+    <article id="menudetail" class="scroll active">
+     <div>
+        <div data-ng-repeat="itemmenu in menudetail"> 
+            <div class="large text  bold align_center">
+              <img src="assets/images/{{itemmenu.menu_image}}"> 
+              </div>
+              <div class="large text  bold align_center">
+             <h1 class="title"> {{itemmenu.menu_name}} </h1>
+              </div> 
+             <div class="large text   align_center">
+                  ${{itemmenu.menu_price}}
+             </div>
+             <div class="large text   align_center">
+                  Served for {{itemmenu.menu_servefor}} people
+             </div><br>
              <div class="large text  bold align_center">
-                <h3 class="large text  bold align_center">{{post.menu_id}}{{post.menu_name}}</h3>
-                <p>$7.5</p>
-                <p>Serve for 4 people</p>
-                <p>Lorem ipsum</p>
-            </div>    
-               <a href="#/order/myorder" class="button anchor margin-bottom">Add this to my order</a>
-               <a href="#/homepage/share" class="button anchor margin-bottom">Share this</a>
+              {{itemmenu.menu_description}}
+             </div>
         </div>
+    </div>
+ <div id="buttons" class="scrollable indented  current"> 
+      <a href="#/order/myorder" class="button anchor margin-bottom">Add this to my order</a>
+      <a href="#/homepage/share" class="button anchor margin-bottom">Share this</a> 
+</div>
     </article>
      <!-- =============================Share============================= -->
 
@@ -127,33 +139,39 @@
                 <div style="height:30px">
                     <div class="on-right text tiny">
                         <strong>
-                        <a href="#/homepage/menuitems" >{{item.subcategory_name.toUpperCase()}} </a>
+                        <a href="#/homepage/menuitems/{{item.subcategory_id}}" >{{item.subcategory_name.toUpperCase()}} </a>
                         </strong>
                     </div>
                 </div>
             </li>
         </ul>                   
     </article>
-      <!-- =============================menu items by category============================= -->
+     <!-- =============================menu items by category============================= -->
     <article id="menuitems" class="list scroll active">
         <div>
+        <div  ng-controller="CatNameCtrl" >
             <p class="margin bottom">
-                    <a id="veg" href="#/homepage/menuitems" class="button">VEG</a>
-                    <a id="nonveg" href="#/homepage/menuitems" class="button">NON VEG</a>
+                    <select ng-model="query">
+                        <option value="" selected>Select Veg/NonVeg</option>
+                        <option ng-repeat="item in veg_nonvegs" value="{{item.menu_category}}" >
+                          {{item.category_name}}</option>
+                    </select>  
             </p>
         </div>
-        <div>
+        <div ng-model="query"  ng-controller="CatCtrl">
             <ul>
-                <li class="thumb" data-ng-repeat="item in Showmenu">
-                     <img src="assets/images/logo.jpg"> 
+                <li class="thumb" ng-repeat="item in ShowmenuByCatId"| filter:query>
+                     <img src="assets/images/{{item.menu_image}}"> 
                     <div style="height:30px">
                         <div class="on-right text tiny">
-                            <a href="#/homepage/menudetail" ><strong>{{item.menu_name.toUpperCase()}}</strong></a>
+                            <a href="#/homepage/menudetail/{{item.menu_id}}" >
+                                <strong>{{item.menu_name}}</strong></a>
                              ${{item.menu_price}}
                         </div>
                     </div>
                 </li>
             </ul>
+        </div>
         </div>  
     </article>
 
